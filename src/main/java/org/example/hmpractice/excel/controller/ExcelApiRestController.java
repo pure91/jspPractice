@@ -32,19 +32,20 @@ public class ExcelApiRestController {
     }
 
     // excel 다운로드
-    public void printExcelData(HttpServletResponse response, @RequestParam Map<String, String> excelList) throws  NumberFormatException, IOException {
-        log.info("printExcelData");
+    @GetMapping("/downloadExcel")
+    public void ExcelDownloadData(HttpServletResponse response, @RequestParam Map<String, String> excelList) throws NumberFormatException, IOException {
+        log.info("ExcelDownloadData:" + excelList);
 
         // jsp에서 요청받은 데이터를 엑셀 파일에 작성함
-//        Workbook wb = excelService.excelPrint(excelList);
+        Workbook wb = excelService.ExcelDownload(excelList);
 
         // 컨텐츠 타입, 파일명 지정
         response.setContentType("ms-vnd/excel");
         response.setHeader("Content-Disposition", "attachment;filename=test.xlsx");
 
         // excel 파일 저장
-//        wb.write(response.getOutputStream());
-//        wb.close();
+        wb.write(response.getOutputStream());
+        wb.close();
     }
 
 }

@@ -16,12 +16,12 @@ function excelListTable() {
         let html = `
         <div class='excelList'>
             <div id='downloadBtn'>
-                <form name='excelFormData' id='targetForm' method='GET' action='api/excel/printexcel' onsubmit='excelsubmit();'>
+                <form name='excelFormData' id='targetForm' method='GET' action='http://localhost:8080/api/excel/downloadExcel' onsubmit='excelsubmit();'>
                     <input type='hidden' id='excelChk' name='excelChk' value='' />
                     <input type='hidden' id='excelA' name='excelA' value='' />
                     <input type='hidden' id='excelB' name='excelB' value='' />
                     <input type='hidden' id='excelC' name='excelC' value='' />
-                    <input type='submit' id='targetBtn' value='EXCEL' />
+                    <input type='submit' id='targetBtn' value='Excel Download' />
                 </form>
             </div>
             <table class='excelTable' style='width:100%;'>
