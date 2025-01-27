@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.1'
+    id 'org.springframework.boot' version '2.7.10'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -29,25 +29,31 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-logging'
 
     /* log4j2 */
-    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
+    implementation 'org.apache.logging.log4j:log4j-api:2.23.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.23.1'
 
     /* maria db Connection */
-    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.3.3'
 
     /* mybatis */
-    // https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
-    implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '3.0.3'
+    implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '2.2.0'
 
     /* excel poi */
-    // https://mvnrepository.com/artifact/org.apache.poi/poi
     implementation group: 'org.apache.poi', name: 'poi', version: '5.2.3'
     implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.3'
 
+    /* JSON Parse*/
+    implementation group: 'org.json', name: 'json', version: '20240303'
+
     /* JSP */
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat' // 부트에서 JSP 사용하려면 스마트 톰캣 필요
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'  // JSP 버전 맞추기
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'     // JSP 실행을 위한 의존성
+
+    /* JSTL 의존성 */
     implementation 'javax.servlet:jstl:1.2'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
