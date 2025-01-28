@@ -8,7 +8,6 @@
 </head>
 <body>
 <h1>2번째 문제 결과</h1>
-<%-- JSON 리스트 출력 --%>
 <h2>긴 문자열 split 추출 후 map 조회 :</h2>
 <ul>
     <c:forEach var="log" items="${logsList}">
