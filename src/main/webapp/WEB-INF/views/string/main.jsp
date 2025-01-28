@@ -10,7 +10,9 @@
     <button type="submit" name="sendName" value="first">1번째 문제</button>
     <button type="submit" name="sendName" value="second">2번째 문제</button>
     <button type="submit" name="sendName" value="third">3번째 문제</button>
-    <button type="submit" name="sendName" value="fourth">4번째 문제</button>
+    <button type="submit" name="sendName" value="four">4번째 문제</button>
+    <button type="submit" name="sendName" value="five">5번째 문제</button>
+    <button type="submit" name="sendName" value="six">6번째 문제</button>
 </form>
 </body>
 </html>

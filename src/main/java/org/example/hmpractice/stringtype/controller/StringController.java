@@ -40,8 +40,8 @@ public class StringController {
                 return "redirect:/string/second";
             case "third":
                 return "redirect:/string/third";
-            case "fourth":
-                return "redirect:/string/fourth";
+            case "four":
+                return "redirect:/string/four";
             case "five":
                 return "redirect:/string/five";
             case "six":
@@ -226,8 +226,8 @@ public class StringController {
         return queryParams;
     }
 
-    // json 데이터 배열에서 제품 이름 추출해서 price 50이상인 제품만 map에 담아서 키(id), value는 json의 name, price 출력하기
-    @GetMapping("/fourth")
+    // 4번째 문제 : json 데이터 배열에서 제품 이름 추출해서 price 50이상인 제품만 map에 담아서 키(id), value는 json의 name, price 출력하기
+    @GetMapping("/four")
     public String theFourthQuestion(Model model) {
         String jsonData = """
                 {
@@ -265,5 +265,113 @@ public class StringController {
         model.addAttribute("productsMap", productsMap);
 
         return "string/fourth";
+    }
+
+    // 5번째 문제 : 고객 주문 중첩된 JSON 처리
+    @GetMapping("/five")
+    public String theFiveQuestion(Model model) {
+        String jsonData = """
+                {
+                  "orderId": "order123",
+                  "customer": {
+                    "id": "customer1",
+                    "name": "John Doe",
+                    "address": "123 Main St"
+                  },
+                  "items": [
+                    {"productId": "p1", "quantity": 2},
+                    {"productId": "p2", "quantity": 1},
+                    {"productId": "p3", "quantity": 4}
+                  ]
+                }
+                """;
+
+        // json 파싱
+        JSONObject jsonObject = new JSONObject(jsonData);
+
+        // 1. customer 고객 정보 추출해서 map에 저장
+        JSONObject customer = jsonObject.getJSONObject("customer");
+        Map<String, String> customerMap = new HashMap<>();
+        customerMap.put("id", customer.getString("id"));
+        customerMap.put("name", customer.getString("name"));
+        customerMap.put("address", customer.getString("address"));
+        model.addAttribute("customerMap", customerMap);
+
+        // 2. items[] 배열 추출
+        JSONArray itemsArray = jsonObject.getJSONArray("items");
+
+        // 3. 모든 productId를 List<String>에 저장
+        List<String> productIdList = new ArrayList<>();
+        for (int i = 0; i < itemsArray.length(); i++) {
+            JSONObject item = itemsArray.getJSONObject(i);
+            productIdList.add(item.getString("productId"));
+        }
+        model.addAttribute("productIdList", productIdList);
+
+        // 4. 수량이 3 이상인 제품만 Map에 저장
+        Map<String, Object> filteredProductMap = new HashMap<>();
+        for (int i = 0; i < itemsArray.length(); i++) {
+            JSONObject item = itemsArray.getJSONObject(i);
+            int quantity = item.getInt("quantity");
+
+            if (quantity >= 3) {
+                Map<String, Object> productMap = new HashMap<>();
+                productMap.put("productId", item.getString("productId"));
+                productMap.put("quantity", quantity);
+                filteredProductMap.put(item.getString("productId"), productMap);
+            }
+        }
+        model.addAttribute("filteredProductMap", filteredProductMap);
+        return "string/five";
+    }
+
+    // 6번째 문제 : 비밀번호 문자열 암호화 복호화
+    @GetMapping("/six")
+    public String theSixthQuestion(Model model) {
+        // 사용자들의 비밀번호를 Base64로 암호화(Encoder)하고 결과는 Map에 저장해라
+        // 그리고 암호화된 비밀번호를 다시 복호화(Decoder)해서 원래의 값과 비교하여 일치하는지 확인
+
+        // 사용자 데이터 배열
+        String[] userData = {
+            "id=user1,password=securePassword123",
+            "id=user2,password=MySecretPwd!"
+        };
+
+        // Base64 인코더 디코더
+        Base64.Encoder encoder = Base64.getEncoder();
+        Base64.Decoder decoder = Base64.getDecoder();
+
+        // 사용자 정보를 저장할 리스트
+        List<Map<String, String>> userInfoList = new ArrayList<>();
+
+        // 사용자 데이터 처리
+        for (String data : userData) {
+            // 콤마로 id랑 password 분리 -> id=와 password= 분리하여 추출
+            String[] parts = data.split(",");
+            String id = parts[0].split("=")[1];
+            String password = parts[1].split("=")[1];
+
+            // 비밀번호 암호화
+            String encryptedPassword = encoder.encodeToString(password.getBytes());
+            // 암호화된 비밀번호 복호화(Decoder)
+            String decryptedPassword = new String(decoder.decode(encryptedPassword));
+
+            // 복호화한 값과 원래 값 비교
+            boolean isMatch = password.equals(decryptedPassword);
+            String message = isMatch ? "값이 동일합니다." : "값이 다릅니다.";
+
+            Map<String, String> userMap = new HashMap<>();
+            userMap.put("id", id);
+            userMap.put("password", password);
+            userMap.put("encryptedPassword", encryptedPassword);
+            userMap.put("decryptedPassword", decryptedPassword);
+            userMap.put("message", message);
+
+            // Map에 다 넣은 뒤에 리스트에 add
+            userInfoList.add(userMap);
+        }
+
+        model.addAttribute("userInfoList", userInfoList);
+        return "string/six";
     }
 }
