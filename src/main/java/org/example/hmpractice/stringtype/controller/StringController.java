@@ -40,8 +40,8 @@ public class StringController {
                 return "redirect:/string/second";
             case "third":
                 return "redirect:/string/third";
-            case "four":
-                return "redirect:/string/four";
+            case "fourth":
+                return "redirect:/string/fourth";
             case "five":
                 return "redirect:/string/five";
             case "six":
@@ -224,5 +224,46 @@ public class StringController {
             }
         }
         return queryParams;
+    }
+
+    // json 데이터 배열에서 제품 이름 추출해서 price 50이상인 제품만 map에 담아서 키(id), value는 json의 name, price 출력하기
+    @GetMapping("/fourth")
+    public String theFourthQuestion(Model model) {
+        String jsonData = """
+                {
+                    "products": [
+                        {"id": "p1", "name": "Laptop", "price": "1000"},
+                        {"id": "p2", "name": "Mouse", "price": "45"},
+                        {"id": "p3", "name": "Keyboard", "price": "100"}
+                    ]
+                }
+                """;
+
+        // JSON 데이터 파싱
+        JSONObject jsonObject = new JSONObject(jsonData);
+        JSONArray prdctArray = jsonObject.getJSONArray("products"); // 배열 key값 가져옴
+
+        // 50원 이상의 제품만 담을 map 생성
+        Map<String, Map<String, Object>> productsMap = new HashMap<>();
+
+        for (int i = 0; i < prdctArray.length(); i++) {
+            JSONObject product = prdctArray.getJSONObject(i);
+
+            int price = product.getInt("price");
+            if (price >= 50) {
+                // name과 price를 담을 map
+                Map<String, Object> productDetailMap = new HashMap<>();
+                productDetailMap.put("name", product.getString("name"));
+                productDetailMap.put("price", price);
+
+                // id를 키로 사용하여 value(name, price)추가
+                productsMap.put(product.getString("id"), productDetailMap);
+            }
+        }
+
+        // 최종 jsp 전달
+        model.addAttribute("productsMap", productsMap);
+
+        return "string/fourth";
     }
 }

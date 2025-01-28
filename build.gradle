@@ -30,11 +30,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
 
-
     /* log4j2 */
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-
-
 
     /* maria db Connection */
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.3.3'
@@ -58,6 +55,9 @@ dependencies {
     /* JSTL 의존성 */
     implementation 'javax.servlet:jstl:1.2'
     implementation 'org.apache.taglibs:taglibs-standard-impl:1.2.5'
+
+    /* JSP 서버 재시작 안해도 변경사항 reload*/
+    implementation  'org.springframework.boot:spring-boot-devtools'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
