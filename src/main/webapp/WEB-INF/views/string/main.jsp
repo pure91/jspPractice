@@ -13,6 +13,7 @@
     <button type="submit" name="sendName" value="four">4번째 문제</button>
     <button type="submit" name="sendName" value="five">5번째 문제</button>
     <button type="submit" name="sendName" value="six">6번째 문제</button>
+    <button type="submit" name="sendName" value="seven">7번째 문제</button>
 </form>
 </body>
 </html>

@@ -374,4 +374,52 @@ public class StringController {
         model.addAttribute("userInfoList", userInfoList);
         return "string/six";
     }
+
+    // 7번째 문제 : 고객 구매 이력 분석, 이름 기준으로 데이터를 그룹화하고 가격이 500 이상인 주문만 추출해서 저장 후 출력
+    @GetMapping("/seven")
+    public String theSeventhQuestion(Model model) {
+        // 예전에 학원에서 배울때는 이렇게 고정 크기로도 하긴했음
+//        String[] orderData = new String[2]; //고정 크기 지정 배열
+//        orderData[0] = "order1: product=Phone, price=800, customer=John";
+//        orderData[1] = "order2: product=Laptop, price=1500, customer=Alice";
+
+        // []는 배열의 타입! String[]처럼 "타입을 정의할때"고
+        // java에서 배열을 초기화하는건 {} 중괄호로 값을 넣어야야함!!
+        String[] orderData = {
+                "order1: product=Phone, price=800, customer=John",
+                "order2: product=Laptop, price=1500, customer=Alice",
+                "order3: product=Tablet, price=300, customer=John",
+                "order4: product=Headphones, price=100, customer=Alice",
+                "order5: product=Monitor, price=200, customer=Bob"
+        };
+
+        // 고객별 주문 목록을 저장할 맵
+        Map<String, List<String>> customerOrderListMap = new HashMap<>();
+
+        // 가격이 500 이상인 주문만 저장할 List
+        List<String> expensiveOrderList = new ArrayList<>();
+
+        // 주문 데이터 처리
+        for (String order : orderData) {
+            String[] parts = order.split(",");
+
+            String product = parts[0].split("=")[1];
+            int price = Integer.parseInt(parts[1].split("=")[1]);
+            String customer = parts[2].split("=")[1];
+
+            if (!customerOrderListMap.containsKey(customer)) {
+                customerOrderListMap.put(customer, new ArrayList<>());
+            }
+            customerOrderListMap.get(customer).add(product + " (" + price + ")");
+
+            if (price >= 500) {
+                expensiveOrderList.add(product + " (" + price + ")");
+            }
+        }
+
+        model.addAttribute("customerOrderListMap", customerOrderListMap);
+        model.addAttribute("expensiveOrderList", expensiveOrderList);
+
+        return "string/seven";
+    }
 }
