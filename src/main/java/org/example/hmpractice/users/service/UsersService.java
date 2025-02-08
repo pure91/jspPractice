@@ -5,13 +5,15 @@ import org.example.hmpractice.users.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsersService {
 
     @Autowired
     UsersMapper usersMapper;
 
-    // 회원가입
+    // 이메일 중복 확인
     public boolean isEmailExists(String email) {
         int count = usersMapper.countByEmail(email);
         if (count > 0) {
@@ -28,5 +30,10 @@ public class UsersService {
         if (result == 0) {
             throw new RuntimeException("회원가입에 실패하였습니다");
         }
+    }
+
+    // 사용자 조회
+    public List<UsersDTO> getAllUsers() {
+        return usersMapper.getUserList();
     }
 }

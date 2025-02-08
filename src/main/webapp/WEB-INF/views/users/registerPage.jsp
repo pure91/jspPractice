@@ -10,6 +10,9 @@
 </head>
 <body>
 <h2>회원가입 폼</h2>
+<a href="/users">
+    <button>Main 돌아가기</button>
+</a>
 <form id="registerForm">
     <label for="username">아이디:</label>
     <input type="text" id="username" name="username"
@@ -42,7 +45,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/users/checkEmail",
+                url: "/api/users/checkEmail",
                 contentType: "application/json",
                 data: JSON.stringify({"email": email}),
                 success: function (result) {
@@ -81,7 +84,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/users/signUp",
+                url: "/api/users/signUp",
                 contentType: "application/json",
                 data: JSON.stringify(formData),
                 // ajax에서 success(200~299)와 error(400~500)는 HTTP 상태코드에따라 실행됨

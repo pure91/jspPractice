@@ -14,4 +14,9 @@
         INSERT INTO users (username, email, password)
         VALUES (#{username}, #{email}, #{password})
     </insert>
+
+    <!-- 사용자 조회 -->
+    <select id="getUserList" resultType="UsersDTO">
+        SELECT username, email FROM users
+    </select>
 </mapper>
