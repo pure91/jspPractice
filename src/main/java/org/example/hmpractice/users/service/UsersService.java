@@ -11,7 +11,7 @@ public class UsersService {
     @Autowired
     UsersMapper usersMapper;
 
-    // 회원가입 -> 이메일 중복 확인
+    // 회원가입
     public boolean isEmailExists(String email) {
         int count = usersMapper.countByEmail(email);
         if (count > 0) {
@@ -21,8 +21,12 @@ public class UsersService {
         }
     }
 
-    // 회원가입 -> 등록
-    public UsersDTO registerUser(UsersDTO usersDTO) {
-        return usersMapper.registerUserInfo(usersDTO);
+    // 회원가입
+    public void registerUser(UsersDTO usersDTO) {
+        int result = usersMapper.registerUserInfo(usersDTO);
+
+        if (result == 0) {
+            throw new RuntimeException("회원가입에 실패하였습니다");
+        }
     }
 }
