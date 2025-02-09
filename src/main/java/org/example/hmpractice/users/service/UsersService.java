@@ -41,4 +41,13 @@ public class UsersService {
     public UsersDTO getUserInfo(int id) {
         return usersMapper.getUserDetail(id);
     }
+
+    // 사용자 정보 수정
+    public void updateUserInfo(UsersDTO usersDTO) {
+        int result = usersMapper.updateUserInfo(usersDTO);
+
+        if (result == 0) {
+            throw new RuntimeException("정보수정에 실패하였습니다");
+        }
+    }
 }

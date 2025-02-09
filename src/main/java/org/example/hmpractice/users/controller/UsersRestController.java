@@ -4,12 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.example.hmpractice.users.dto.UsersDTO;
 import org.example.hmpractice.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +20,19 @@ public class UsersRestController {
 
     // 이메일 중복 체크 API
     @PostMapping("/checkEmail")
-    public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> checkEmail(
+            @RequestParam(value = "email") String email,
+            @RequestParam(value = "currentEmail", required = false) String currentEmail) {
+
         Map<String, Object> result = new HashMap<>();
-        String email = request.get("email");
+        log.debug("email{}, currentEmail{}: ", email, currentEmail);
+
+        // 만약 수정하려는 이메일이 현재 이메일과 같을 경우 허용
+        if (email.equals(currentEmail)) {
+            result.put("success", true);
+            result.put("message", "사용 가능한 이메일입니다.");
+            return ResponseEntity.ok(result);
+        }
 
         boolean existUserEmail = usersService.isEmailExists(email);
         log.debug("existUserEmail: {}", existUserEmail);
@@ -39,7 +45,7 @@ public class UsersRestController {
             result.put("message", "사용 가능한 이메일입니다.");
         }
 
-        return ResponseEntity.ok(result); // 단순 중복체크니까 길게 쓸 필요없이 200 반환
+        return ResponseEntity.ok(result);
     }
 
     // 회원가입
@@ -69,6 +75,25 @@ public class UsersRestController {
             log.debug("회원가입 실패:{}", e.getMessage());
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(result); // insert니까 정확하게 201 상태를 보내줌
+        return ResponseEntity.ok(result);
+    }
+
+    // 사용자 정보 수정
+    @PostMapping("/updateUserInfo")
+    public ResponseEntity<Map<String, Object>> updateUserInfo(@RequestBody UsersDTO usersDTO) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            // 정보 수정
+            usersService.updateUserInfo(usersDTO);
+            result.put("success", true);
+            result.put("message", "정보수정 완료");
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "정보수정 실패");
+            log.debug("정보수정 실패:{}", e.getMessage());
+        }
+
+        return ResponseEntity.ok(result);
     }
 }

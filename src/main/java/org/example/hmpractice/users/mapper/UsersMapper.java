@@ -19,4 +19,7 @@ public interface UsersMapper {
 
     // 사용자 정보 조회
     UsersDTO getUserDetail(int id);
+
+    // 사용자 정보 수정
+    int updateUserInfo(UsersDTO usersDTO);
 }

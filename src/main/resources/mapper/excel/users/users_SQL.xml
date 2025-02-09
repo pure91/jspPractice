@@ -7,6 +7,7 @@
         SELECT count(1)
         FROM users
         WHERE email = #{email}
+        AND delete_yn = 'N'
     </select>
 
     <!-- 회원가입 -->
@@ -19,6 +20,7 @@
     <select id="getUserList" resultType="UsersDTO">
         SELECT id, username, email
         FROM users
+        WHERE delete_yn = 'N'
     </select>
 
     <!-- 사용자 정보 조회 -->
@@ -26,5 +28,13 @@
         SELECT id, username, email, created_at
         FROM users
         WHERE id = #{id}
+        AND delete_yn = 'N'
     </select>
+
+    <!-- 사용자 정보 수정 -->
+    <update id="updateUserInfo" parameterType="UsersDTO">
+        UPDATE users
+        SET username = #{username}, email = #{email}
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -46,8 +46,7 @@
             $.ajax({
                 type: "POST",
                 url: "/api/users/checkEmail",
-                contentType: "application/json",
-                data: JSON.stringify({"email": email}),
+                data: {"email": email},
                 success: function (result) {
                     if (result.success === true) {
                         $("#emailCheckResult").text(result.message).css("color", "green");
