@@ -37,4 +37,11 @@
         SET username = #{username}, email = #{email}
         WHERE id = #{id}
     </update>
+
+    <!-- 사용자 삭제(논리) -->
+    <update id="deleteUser" parameterType="int">
+        UPDATE users
+        SET delete_yn = 'Y'
+        WHERE id = #{id}
+    </update>
 </mapper>

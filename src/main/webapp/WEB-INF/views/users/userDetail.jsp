@@ -94,7 +94,7 @@
                 type: "POST",
                 url: "/api/users/updateUserInfo",
                 contentType: "application/json",
-                data: JSON.stringify(formData),
+                data: JSON.stringify(formData), // ajax에서는 data로 보내면 객체구나 무조건
                 success: function (result) {
                     if (result.success === true) {
                         alert(result.message);
@@ -109,6 +109,36 @@
                     console.log("error:", error);  // 서버에서 전달한 에러 메시지
 
                     alert("수정 중 오류 발생");
+                }
+            })
+        }
+
+        // 삭제
+        function deleteUserInfo () {
+            let id = Number("${userInfo.id}");
+            console.log("id:",id);
+            console.log("type of id:",typeof id);
+            if (!confirm("정말 삭제하시겠습니까?")){ // 확인 시 true로 if문 빠짐, 취소 시 false로 return;
+                return;
+            }
+
+            $.ajax({
+                type : "POST",
+                url : "/api/users/deleteUser/" + id,
+                success: function (result) {
+                    if (result.success === true) {
+                        alert(result.message);
+                        location.replace("/users/list");
+                    } else {
+                        alert(result.message);
+                    }
+                },
+                error : function (xhr, status, error) {
+                    console.log("xhr:", xhr);  // 전체 응답 객체
+                    console.log("status:", status);  // 요청 상태 ("error", "timeout" 등)
+                    console.log("error:", error);  // 서버에서 전달한 에러 메시지
+
+                    alert("삭제 중 오류 발생");
                 }
             })
         }

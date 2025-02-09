@@ -50,4 +50,13 @@ public class UsersService {
             throw new RuntimeException("정보수정에 실패하였습니다");
         }
     }
+
+    // 사용자 삭제
+    public void deleteUser(int id) {
+        int result = usersMapper.deleteUser(id);
+
+        if (result == 0) {
+            throw new RuntimeException("삭제에 실패하였습니다");
+        }
+    }
 }

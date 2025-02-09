@@ -96,4 +96,22 @@ public class UsersRestController {
 
         return ResponseEntity.ok(result);
     }
+
+    // 사용자 삭제
+    @PostMapping("/deleteUser/{id}")
+    public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable(value = "id") int id) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            usersService.deleteUser(id);
+            result.put("success", true);
+            result.put("message", "삭제되었습니다.");
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "삭제 실패");
+            log.debug("삭제 실패:{}", e.getMessage());
+        }
+
+        return ResponseEntity.ok(result);
+    }
 }

@@ -22,4 +22,7 @@ public interface UsersMapper {
 
     // 사용자 정보 수정
     int updateUserInfo(UsersDTO usersDTO);
+
+    // 사용자 삭제
+    int deleteUser(int id);
 }
