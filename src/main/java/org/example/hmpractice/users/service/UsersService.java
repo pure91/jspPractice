@@ -32,8 +32,13 @@ public class UsersService {
         }
     }
 
-    // 사용자 조회
+    // 사용자 목록 조회
     public List<UsersDTO> getAllUsers() {
         return usersMapper.getUserList();
+    }
+
+    // 사용자 정보 조회
+    public UsersDTO getUserInfo(int id) {
+        return usersMapper.getUserDetail(id);
     }
 }

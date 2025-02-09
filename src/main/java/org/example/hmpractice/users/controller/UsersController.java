@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,11 +32,20 @@ public class UsersController {
         return "users/registerPage";
     }
 
-    // 사용자 조회
+    // 사용자 목록 조회
     @GetMapping("/list")
     public String getUserList(Model model) {
         List<UsersDTO> userList = usersService.getAllUsers();
         model.addAttribute("userList", userList);
         return "users/userList";
+    }
+
+    // 사용자 정보 조회
+    @GetMapping("/detail")
+    public String getUserDetail(Model model, @RequestParam(value = "id", required = false) int id) {
+        UsersDTO userInfo = usersService.getUserInfo(id);
+        model.addAttribute("userInfo", userInfo);
+        log.debug("userInfo:{}", userInfo);
+        return "users/userDetail";
     }
 }

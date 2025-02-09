@@ -15,8 +15,16 @@
         VALUES (#{username}, #{email}, #{password})
     </insert>
 
-    <!-- 사용자 조회 -->
+    <!-- 사용자 목록 조회 -->
     <select id="getUserList" resultType="UsersDTO">
-        SELECT username, email FROM users
+        SELECT id, username, email
+        FROM users
+    </select>
+
+    <!-- 사용자 정보 조회 -->
+    <select id="getUserDetail" resultType="UsersDTO" parameterType="int">
+        SELECT id, username, email, created_at
+        FROM users
+        WHERE id = #{id}
     </select>
 </mapper>
