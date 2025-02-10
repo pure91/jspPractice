@@ -7,7 +7,6 @@
         SELECT count(1)
         FROM users
         WHERE email = #{email}
-        AND delete_yn = 'N'
     </select>
 
     <!-- 회원가입 -->

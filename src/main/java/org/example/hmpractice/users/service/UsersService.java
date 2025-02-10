@@ -3,6 +3,7 @@ package org.example.hmpractice.users.service;
 import org.example.hmpractice.users.dto.UsersDTO;
 import org.example.hmpractice.users.mapper.UsersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,9 @@ public class UsersService {
 
     @Autowired
     UsersMapper usersMapper;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     // 이메일 중복 확인
     public boolean isEmailExists(String email) {
@@ -25,6 +29,8 @@ public class UsersService {
 
     // 회원가입
     public void registerUser(UsersDTO usersDTO) {
+        String encodedPassword = passwordEncoder.encode(usersDTO.getPassword());
+        usersDTO.setPassword(encodedPassword);
         int result = usersMapper.registerUserInfo(usersDTO);
 
         if (result == 0) {
