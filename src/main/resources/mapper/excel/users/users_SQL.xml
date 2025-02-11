@@ -43,4 +43,11 @@
         SET delete_yn = 'Y'
         WHERE id = #{id}
     </update>
+
+    <!-- 유저 정보 찾기 -->
+    <select id="getUserEmail" resultType="UsersDTO" parameterType="String">
+        SELECT id, username, email, password
+        FROM users
+        WHERE email = #{email}
+    </select>
 </mapper>

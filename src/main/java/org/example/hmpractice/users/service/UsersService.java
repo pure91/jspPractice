@@ -65,4 +65,9 @@ public class UsersService {
             throw new RuntimeException("삭제에 실패하였습니다");
         }
     }
+
+    // User 로그인 정보 조회
+    public UsersDTO findByEmail(String email) {
+        return usersMapper.getUserEmail(email);
+    }
 }

@@ -3,54 +3,86 @@
 <html>
 <head>
     <title>UserList</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 70%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px gray;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        tbody {
+            text-align: center;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr.clickable:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+    </style>
     <script>
         function selectUser(row) {
             let userId = row.getAttribute("data-id");
-            console.log("userId:", userId);
             location.href = "/users/detail?id=" + userId;
         }
     </script>
 </head>
-<style>
-    /* 커서 손 모양 */
-    tr.clickable {
-        cursor: pointer;
-    }
-    /* 마우스 호버 배경색 */
-    tr.clickable:hover {
-        background-color: #f0f0f0;
-    }
-
-    /* 밑줄 추가 */
-    tr.clickable td {
-        padding: 10px;
-    }
-
-    tr.clickable:hover td {
-        text-decoration: underline;
-    }
-</style>
 <body>
-<h2>사용자 목록 조회</h2>
-<a href="/users">
-    <button>Main 돌아가기</button>
-</a>
-
-<table border="1">
-    <thead>
-    <tr>
-        <th>사용자명</th>
-        <th>이메일</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="user" items="${userList}">
-        <tr data-id="${user.id}" onclick="selectUser(this)" class="clickable">
-            <td>${user.username}</td>
-            <td>${user.email}</td>
+<div class="container">
+    <h2>사용자 목록 조회</h2>
+    <a href="/users">
+        <button>메인으로</button>
+    </a>
+    <table>
+        <thead>
+        <tr>
+            <th>사용자명</th>
+            <th>이메일</th>
         </tr>
-    </c:forEach>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        <c:forEach var="user" items="${userList}">
+            <tr data-id="${user.id}" onclick="selectUser(this)" class="clickable">
+                <td>${user.username}</td>
+                <td>${user.email}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

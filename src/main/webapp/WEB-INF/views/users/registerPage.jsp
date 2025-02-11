@@ -7,29 +7,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 40%;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px gray;
+            border-radius: 10px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        label {
+            width: 100px;
+            font-weight: bold;
+        }
+        input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #checkEmailBtn {
+            margin-left: 10px;
+            padding: 8px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 20%;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .small-btn {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+            width: 30%;
+            background-color: lightgray;
+        }
+        #emailCheckResult {
+            margin-left: 10px;
+            font-size: 12px;
+        }
+    </style>
 </head>
 <body>
-<h2>회원가입 폼</h2>
-<a href="/users">
-    <button>Main 돌아가기</button>
-</a>
-<form id="registerForm">
-    <label for="username">아이디:</label>
-    <input type="text" id="username" name="username"
-           placeholder="아이디를 입력해주세요." required><br/>
+<div class="container">
+    <h2>회원가입</h2>
+    <a href="/users">
+        <button class="small-btn">메인으로</button>
+    </a>
+    <form id="registerForm">
+        <div class="form-group">
+            <label for="username">아이디:</label>
+            <input type="text" id="username" name="username" placeholder="아이디를 입력해주세요." required>
+        </div>
 
-    <label for="email">이메일:</label>
-    <input type="text" id="email" name="email"
-           placeholder="이메일을 입력해주세요" required>
-    <button type="button" id="checkEmailBtn">중복확인</button>
-    <span id="emailCheckResult"></span><br>
+        <div class="form-group">
+            <label for="email">이메일:</label>
+            <input type="text" id="email" name="email" placeholder="이메일을 입력해주세요" required>
+            <button type="button" id="checkEmailBtn">중복확인</button>
+        </div>
+        <span id="emailCheckResult"></span>
 
-    <label for="password">비밀번호:</label>
-    <input type="password" id="password" name="password"
-           placeholder="비밀번호를 입력해주세요" required autocomplete="off"><br/>
+        <div class="form-group">
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요" required autocomplete="off">
+        </div>
 
-    <button type="submit">회원가입</button>
-</form>
+        <button type="submit">회원가입</button>
+    </form>
+</div>
 
 <script>
     $(document).ready(function () {
@@ -57,9 +127,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log("xhr:", xhr);  // 전체 응답 객체
-                    console.log("status:", status);  // 요청 상태 ("error", "timeout" 등)
-                    console.log("error:", error);  // 서버에서 전달한 에러 메시지
+                    console.log("xhr:", xhr);
+                    console.log("status:", status);
+                    console.log("error:", error);
 
                     alert("이메일 중복 확인 중 오류 발생");
                 }
@@ -86,7 +156,6 @@
                 url: "/api/users/signUp",
                 contentType: "application/json",
                 data: JSON.stringify(formData),
-                // ajax에서 success(200~299)와 error(400~500)는 HTTP 상태코드에따라 실행됨
                 success: function (result) {
                     if (result.success === true) {
                         alert(result.message);
@@ -96,9 +165,9 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    console.log("xhr:", xhr);  // 전체 응답 객체
-                    console.log("status:", status);  // 요청 상태 ("error", "timeout" 등)
-                    console.log("error:", error);  // 서버에서 전달한 에러 메시지
+                    console.log("xhr:", xhr);
+                    console.log("status:", status);
+                    console.log("error:", error);
 
                     alert("회원가입 중 오류 발생");
                 }

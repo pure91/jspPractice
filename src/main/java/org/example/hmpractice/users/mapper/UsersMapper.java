@@ -25,4 +25,7 @@ public interface UsersMapper {
 
     // 사용자 삭제
     int deleteUser(int id);
+
+    // User 로그인 정보 조회
+    UsersDTO getUserEmail(String email);
 }
