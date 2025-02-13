@@ -1,7 +1,7 @@
 package org.example.hmpractice.users.controller;
 
+import com.github.pagehelper.PageInfo;
 import lombok.extern.log4j.Log4j2;
-import org.apache.catalina.User;
 import org.example.hmpractice.users.dto.UsersDTO;
 import org.example.hmpractice.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Log4j2
 @Controller
@@ -79,9 +76,14 @@ public class UsersController {
 
     // 사용자 목록 조회
     @GetMapping("/list")
-    public String getUserList(Model model) {
-        List<UsersDTO> userList = usersService.getAllUsers();
+    public String getUserList(
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(defaultValue = "") String keyword,
+            Model model) {
+        PageInfo<UsersDTO> userList = usersService.getAllUsers(pageNum, pageSize, keyword);
         model.addAttribute("userList", userList);
+        model.addAttribute("keyword", keyword);
         return "users/userList";
     }
 

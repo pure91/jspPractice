@@ -16,10 +16,13 @@
     </insert>
 
     <!-- 사용자 목록 조회 -->
-    <select id="getUserList" resultType="UsersDTO">
+    <select id="getUserList" resultType="UsersDTO" parameterType="String">
         SELECT id, username, email
         FROM users
         WHERE delete_yn = 'N'
+        <if test="keyword != null and keyword != ''">
+          AND username LIKE CONCAT('%', #{keyword}, '%')
+        </if>
     </select>
 
     <!-- 사용자 정보 조회 -->
@@ -50,4 +53,5 @@
         FROM users
         WHERE email = #{email}
     </select>
+
 </mapper>

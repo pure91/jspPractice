@@ -62,6 +62,9 @@ dependencies {
     /* 비밀번호 암호화를 위한 시큐리티 추가 */
     implementation  'org.springframework.boot:spring-boot-starter-security'
 
+    /* 페이징 헬퍼 */
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.6'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

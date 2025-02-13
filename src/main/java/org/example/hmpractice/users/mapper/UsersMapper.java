@@ -14,8 +14,8 @@ public interface UsersMapper {
     // 회원가입
     int registerUserInfo(UsersDTO usersDTO);
 
-    // 사용자 목록 조회
-    List<UsersDTO> getUserList();
+    // 사용자 목록 조회(페이징)
+    List<UsersDTO> getUserList(String keyword);
 
     // 사용자 정보 조회
     UsersDTO getUserDetail(int id);
@@ -28,4 +28,5 @@ public interface UsersMapper {
 
     // User 로그인 정보 조회
     UsersDTO getUserEmail(String email);
+
 }
