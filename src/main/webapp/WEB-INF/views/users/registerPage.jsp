@@ -79,7 +79,7 @@
     <a href="/users">
         <button class="small-btn">메인으로</button>
     </a>
-    <form id="registerForm">
+    <form id="registerForm" enctype="multipart/form-data">
         <div class="form-group">
             <label for="username">아이디:</label>
             <input type="text" id="username" name="username" placeholder="아이디를 입력해주세요." required>
@@ -95,6 +95,11 @@
         <div class="form-group">
             <label for="password">비밀번호:</label>
             <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요" required autocomplete="off">
+        </div>
+
+        <div class="form-group">
+            <label for="profileImage">프로필 이미지 :</label>
+            <input type="file" id="profileImage" name="profileImage" accept="image/*">
         </div>
 
         <button type="submit">회원가입</button>
@@ -145,17 +150,32 @@
                 return;
             }
 
-            let formData = {
-                username: $("#username").val(),
-                email: $("#email").val(),
-                password: $("#password").val()
-            };
+            // 일반 데이터 추가
+            let formData = new FormData();
+            formData.append("username", $("#username").val());
+            formData.append("email", $("#email").val());
+            formData.append("password", $("#password").val());
+
+            // 파일 추가
+            let profileImage = $("#profileImage")[0].files[0];
+            if (profileImage) {
+                formData.append("profileImage", profileImage);
+            }
+
+            // let formData = {
+            //     username: $("#username").val(),
+            //     email: $("#email").val(),
+            //     password: $("#password").val()
+            // };
 
             $.ajax({
                 type: "POST",
                 url: "/api/users/signUp",
-                contentType: "application/json",
-                data: JSON.stringify(formData),
+                // contentType: "application/json",
+                // data: JSON.stringify(formData),
+                contentType: false, // 자동으로 Content-type을 설정하지 않도록
+                processData: false, // formData 사용으로 데이터 자동처리 방지
+                data: formData,
                 success: function (result) {
                     if (result.success === true) {
                         alert(result.message);

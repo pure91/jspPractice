@@ -1,12 +1,15 @@
 package org.example.hmpractice.users.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.example.hmpractice.files.dto.UsersProfileDTO;
 import org.example.hmpractice.users.dto.UsersDTO;
 import org.example.hmpractice.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +53,8 @@ public class UsersRestController {
 
     // 회원가입
     @PostMapping("/signUp")
-    public ResponseEntity<Map<String, Object>> signUp(@RequestBody UsersDTO usersDTO) {
+    public ResponseEntity<Map<String, Object>> signUp(@RequestBody UsersDTO usersDTO,
+                                                      @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) {
         Map<String, Object> result = new HashMap<>();
 
         // 이메일 중복 확인
@@ -66,9 +70,20 @@ public class UsersRestController {
         try {
             // 회원 가입
             usersService.registerUser(usersDTO);
+
+            // 프로필 사진 업로드
+            if (profileImage != null && !profileImage.isEmpty()) {
+                UsersProfileDTO usersProfileDTO = new UsersProfileDTO();
+                usersProfileDTO.setUserId(usersDTO.getId());
+                usersService.saveUserProfile(usersProfileDTO, profileImage);
+            }
             result.put("success", true);
             result.put("message", "회원가입에 성공하였습니다.");
             result.put("user", usersDTO);
+        } catch (IOException e) {
+            result.put("success", false);
+            result.put("message", "파일 업로드 중 오류가 발생했습니다. " + e.getMessage());
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             result.put("success", false);
             result.put("message", "회원가입에 실패하였습니다.");
