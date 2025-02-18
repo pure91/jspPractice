@@ -150,30 +150,30 @@
                 return;
             }
 
-            // 일반 데이터 추가
-            let formData = new FormData();
-            formData.append("username", $("#username").val());
-            formData.append("email", $("#email").val());
-            formData.append("password", $("#password").val());
+            // 일반 데이터
+            let usersDTO = {
+                username: $("#username").val(),
+                email: $("#email").val(),
+                password: $("#password").val()
+            };
+            console.log("usersDTO", usersDTO);
 
-            // 파일 추가
+            // 파일 데이터
             let profileImage = $("#profileImage")[0].files[0];
+            console.log("profileImage", profileImage);
+
+            let formData = new FormData();
+            formData.append("usersDTO", new Blob([JSON.stringify(usersDTO)], { type: "application/json" }));
+
             if (profileImage) {
                 formData.append("profileImage", profileImage);
             }
-
-            // let formData = {
-            //     username: $("#username").val(),
-            //     email: $("#email").val(),
-            //     password: $("#password").val()
-            // };
+            console.log("formData", formData);
 
             $.ajax({
                 type: "POST",
                 url: "/api/users/signUp",
-                // contentType: "application/json",
-                // data: JSON.stringify(formData),
-                contentType: false, // 자동으로 Content-type을 설정하지 않도록
+                contentType: false, // 자동처리 방지 (multipart/form-data로 전송)
                 processData: false, // formData 사용으로 데이터 자동처리 방지
                 data: formData,
                 success: function (result) {

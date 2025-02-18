@@ -1,6 +1,7 @@
 package org.example.hmpractice.users.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.example.hmpractice.files.dto.UsersProfileDTO;
 import org.example.hmpractice.users.dto.UsersDTO;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public interface UsersMapper {
 
     // 회원가입
     int registerUserInfo(UsersDTO usersDTO);
+
+    // 파일 업로드
+    int insertFile(UsersProfileDTO usersProfileDTO);
 
     // 사용자 목록 조회(페이징)
     List<UsersDTO> getUserList(String keyword);
