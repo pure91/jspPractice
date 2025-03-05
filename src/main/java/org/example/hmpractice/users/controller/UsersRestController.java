@@ -71,12 +71,7 @@ public class UsersRestController {
 
         try {
             // 회원 가입
-            usersService.registerUser(usersDTO);
-
-            // 프로필 사진 업로드
-            if (profileImage != null && !profileImage.isEmpty()) {
-                usersService.saveUserProfile(usersDTO.getId(), profileImage);
-            }
+            usersService.registerUserWithProfile(usersDTO, profileImage);
 
             result.put("success", true);
             result.put("message", "회원가입에 성공하였습니다.");

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -47,7 +48,8 @@ public class UsersService {
     }
 
     // 회원가입
-    public void registerUser(UsersDTO usersDTO) {
+    @Transactional
+    public void registerUserWithProfile(UsersDTO usersDTO, MultipartFile profileImage) throws Exception{
         String encodedPassword = passwordEncoder.encode(usersDTO.getPassword());
         usersDTO.setPassword(encodedPassword);
         int result = usersMapper.registerUserInfo(usersDTO);
@@ -57,6 +59,11 @@ public class UsersService {
         }
 
         log.info("GeneratedKeys로 미리 생성된 사용자 ID: {}", usersDTO.getId());
+
+        // 프로필 사진 업로드
+        if (profileImage != null && !profileImage.isEmpty()) {
+            saveUserProfile(usersDTO.getId(), profileImage);
+        }
     }
 
     // 프로필 사진 업로드
@@ -76,7 +83,9 @@ public class UsersService {
             log.info("usersProfileDTO:{}", usersProfileDTO);
 
             int count = usersMapper.insertFile(usersProfileDTO);
-
+            if (count == 0) {
+                throw new RuntimeException("프로필 이미지 저장 실패");
+            }
         } catch (IOException e) {
             throw new Exception("파일 저장 중 오류 발생", e);
         } catch (Exception e) {
@@ -105,6 +114,8 @@ public class UsersService {
         if (!dir.exists()) {
             dir.mkdirs();  // 디렉토리가 없으면 생성
         }
+
+        log.info("uploadDir:{}", uploadDir);
 
         // 지정한 경로에 저장
         File file = new File(uploadDir, uniqueFileName);
